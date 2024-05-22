@@ -188,6 +188,7 @@ for number in filtered(range(1, 10), is_even) do
     print(number)
 end
 
+print("\nex08")
 -- Exercise 9: Nested Iterators
 -- Objective: Use nested iterators.
 
