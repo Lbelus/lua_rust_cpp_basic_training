@@ -38,7 +38,7 @@
 -- instead of searching for it by iterating over the stack. 
 
 
-local minStack = {}
+local minStack_a = {}
 
 
 function minStack.pop(tbl)
@@ -46,15 +46,15 @@ function minStack.pop(tbl)
 end
 
 
-function minStack.push(tbl, value)
+function minStack_a.push(tbl, value)
     return table.insert(tbl, value)
 end
 
-function minStack.top(tbl)
+function minStack_a.top(tbl)
     return tbl[-1]
 end
 
-function minStack.getMin(tbl)
+function minStack_a.getMin(tbl)
     local min = math.maxinteger
     for index = 1, #tbl do
         if tbl[index] < min then
@@ -63,3 +63,69 @@ function minStack.getMin(tbl)
     end
     return min
 end
+
+
+
+-- Approach using metatables, all hail Lua 
+
+local Stack = {}
+
+function Stack:new()
+  MinStack = {
+    stack = {},
+    min_stack = {}
+  }
+  setmetatable(MinStack, self)
+  self.__index = self
+  return MinStack
+end
+
+function Stack:push(value)
+  table.insert(self.stack, value)
+  if #self.min_stack == 0 or value <= self.min_stack[#self.min_stack] then
+    table.insert(self.min_stack, value)
+  end
+end
+
+function Stack:pop()
+  if #self.stack == 0 then
+    error("Stack is empty.")
+  else
+    local value = table.remove(self.stack, #self.stack)
+    if value == self.min_stack[#self.min_stack] then
+      table.remove(self.min_stack)
+      return value
+    end
+  end
+end
+
+function Stack:top()
+  if #self.stack == 0 then
+    error("Stack is empty.")
+  else
+    return self.stack[#self.stack]
+  end
+end
+
+function Stack:min()
+  if #self.stack == 0 then
+    error("Stack is empty.")
+  else
+    return self.min_stack[#self.min_stack]
+  end
+end
+
+local stack = Stack:new()
+
+stack:push(5)
+stack:push(2)
+stack:push(4)
+stack:push(1)
+
+print(stack:min())
+stack:pop()
+print(stack:min())
+stack:pop()
+print(stack:min())
+stack:pop()
+print(stack:min())

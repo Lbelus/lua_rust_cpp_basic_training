@@ -177,7 +177,7 @@ end
 Base.greet()
 
 local base_instance = Base:new()
-base_instance:greet()
+base_instance:greet ()
 
 
 -- 2. Create a derived table
