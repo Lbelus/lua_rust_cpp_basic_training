@@ -97,3 +97,24 @@ function OPERATION:cleanup()
 end
 
 operation:cleanup()
+
+RPN = {}
+
+function RPN:call(tokens)
+    local rpn = OPERATION:new(tokens)
+    local result = rpn:calculate()
+    rpn:cleanup()
+    return result
+end
+
+setmetatable(RPN, {
+    __call = function(self, tokens)
+        return self:call(tokens)
+    end
+})
+
+print("as a function call")
+
+print(RPN({ "5", "4", "7", "+", "*" }))
+print(RPN({ "3", "2", "+", "4", "*" }))
+print(RPN({ "10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+" }))
