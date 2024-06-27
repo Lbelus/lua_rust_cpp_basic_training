@@ -41,7 +41,7 @@ local function largestRectangleArea(heights)
 	end
 	for index = 1, #stack do
 		local pair = stack[index] 
-		max_area = max(max_area, pair[2] * (#heights - pair[1]))
+		max_area = max(max_area, pair[2] * (#heights + 1  - pair[1]))
 	end
 	return max_area
 end
